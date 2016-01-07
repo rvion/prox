@@ -6,12 +6,16 @@ module Main where
 import qualified Data.ByteString.Char8 as BS
 import Network.HTTP.ReverseProxy
 import Data.Conduit.Network
+import Control.Monad
+import System.IO
 
 import Options.Applicative
 import Opts
 
 main :: IO ()
-main = execParser opts >>= app
+main = do
+  hSetBuffering stdout NoBuffering
+  execParser opts >>= app
   where
     opts = info (helper <*> sample)
       ( fullDesc
@@ -21,5 +25,7 @@ main = execParser opts >>= app
 app :: Opts -> IO ()
 app (Opts{..}) = runTCPServer (serverSettings port "*") $ \appData ->
     rawProxyTo
-        (\_headers -> return $ Right $ ProxyDest (BS.pack redir_url) redir_port)
+        (\_headers -> do
+          when verbose (print _headers >> putStrLn "--")
+          return $ Right $ ProxyDest (BS.pack redir_url) redir_port)
         appData
