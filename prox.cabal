@@ -27,3 +27,4 @@ executable prox
                      , http-client
                      , pretty-show
                      , pretty
+                     , http-types
