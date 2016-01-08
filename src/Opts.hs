@@ -4,9 +4,10 @@ import Options.Applicative
 
 data Opts = Opts
   { port :: Int
-  , redir_port :: Int
   , redir_url :: String
+  , redir_port :: Int
   , verbose :: Bool
+  , fast :: Bool
   }
 
 sample :: Parser Opts
@@ -16,15 +17,19 @@ sample = Opts
         <> short 'p'
         <> metavar "PORT"
         <> help "listening port" )
-     <*> option auto
-         ( long "redir-port"
-        <> short 'x'
-        <> help "port to redirect to" )
      <*> strOption
          ( long "redir-url"
-        <> short 'y'
+        <> short 'x'
         <> help "url to redirect to" )
+     <*> option auto
+         ( long "redir-port"
+        <> short 'y'
+        <> help "port to redirect to" )
      <*> switch
          ( long "verbose"
         <> short 'v'
-        <> help "add some blablablablabla" )
+        <> help "add some loging" )
+     <*> switch
+         ( long "fast"
+        <> short 'f'
+        <> help "" )

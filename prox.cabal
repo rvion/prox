@@ -23,3 +23,7 @@ executable prox
                      , conduit-extra
                      , conduit
                      , bytestring
+                     , warp
+                     , http-client
+                     , pretty-show
+                     , pretty
